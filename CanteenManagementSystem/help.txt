@@ -1,0 +1,4 @@
+Hello Somaiyans , welcome to the somaiya college canteen system , here is how to use somaiya register canteen online system 
+for user -  register and then login 
+for canteen - admin can do add of canteen and after that canteen owner can login to the portal 
+for admin - admin can login and have all the features 

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <?php 
+        session_start(); 
+        include("../connectionDB.php"); 
+        include('../head.php');
+        if($_SESSION["utype"]!="admin"){
+            header("location: ../restricted.php");
+            exit(1);
+        }
+    ?>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../css/main.css" rel="stylesheet">
+    <link href="../css/menu.css" rel="stylesheet">
+    <title>Canteen Profile | Somaiya Canteen</title>
+</head>
+
+<body class="d-flex flex-column h-100">
+    <?php include('navHeaderAdmin.php')?>
+
+    <?php
+        $canteenId = $_GET["canteenId"];
+        $query = "SELECT canteenName,canteenLocation,canteenOpenHour,canteenCloseHour,canteenStatus,canteenPreOrderStatus,canteenContactNo,canteenPic
+        FROM canteen WHERE canteenId = {$canteenId} LIMIT 0,1";
+        $result = $mysqli -> query($query);
+        $canteenRow = $result -> fetch_array();
+    ?>
+
+    <div class="container px-5 py-4" id="canteen-body">
+        <a class="nav nav-item text-decoration-none text-muted mb-2" href="#" onclick="history.back();">
+            <i class="bi bi-arrow-left-square me-2"></i>Go back
+        </a>
+        <?php
+            if(isset($_GET["updatePassword"])){
+                if($_GET["updatePassword"]==1){
+                    ?>
+            <!-- START SUCCESSFULLY UPDATE PASSWORD -->
+            <div class="row row-cols-1 notibar">
+                <div class="col mt-2 ms-2 p-2 bg-success text-white rounded text-start">
+                    <span class="ms-2 mt-2">Successfully updated canteen password.</span>
+                </div>
+            </div>
+            <!-- END SUCCESSFULLY UPDATE PASSWORD -->
+            <?php }else{ ?>
+            <!-- START FAILED UPDATE PASSWORD -->
+            <div class="row row-cols-1 notibar">
+                <div class="col mt-2 ms-2 p-2 bg-danger text-white rounded text-start">
+                  <span class="ms-2 mt-2">Failed to update canteen password.</span>
+                </div>
+            </div>
+            <!-- END FAILED UPDATE PASSWORD -->
+            <?php }
+                }
+            ?>
+
+        <div class="container row row-cols-6 row-cols-md-12 g-5 pt-4 mb-4" id="canteen-header">
+            <div class="rounded-25 col-6 col-md-4" id="canteenImage" style="
+                    background: url(
+                        <?php
+                            if(is_null($canteenRow["canteenPic"])){echo "'../images/icon.png'";}
+                            else{echo "'../images/{$canteenRow['canteenPic']}'";}
+                        ?> 
+                    ) center; height: 225px;
+                    background-size: cover; background-repeat: no-repeat;
+                    background-position: center;">
+            </div>
+            <div class="col-6 col-md-8">
+                <h1 class="display-5 strong"><?php echo $canteenRow["canteenName"];?></h1>
+                <ul class="list-unstyled">
+                    <li class="my-2">
+                        <?php 
+                            $now = date('H:i:s');
+                            if((($now < $canteenRow["canteenOpenHour"])||($now > $canteenRow["canteenCloseHour"]))||($canteenRow["canteenStatus"]==0)){
+                        ?>
+                        <span class="badge rounded-pill bg-danger">Closed</span>
+                        <?php }else{ ?>
+                        <span class="badge rounded-pill bg-success">Open</span>
+                        <?php }
+                            if($canteenRow["canteenPreOrderStatus"]==1){
+                        ?>
+                        <span class="badge rounded-pill bg-success">Pre-order avaliable</span>
+                        <?php }else{ ?>
+                        <span class="badge rounded-pill bg-danger">Pre-order Unavaliable</span>
+                        <?php } ?>
+                    </li>
+                    <li class=""><?php echo $canteenRow["canteenLocation"];?></li>
+                    <li class="">Open hours:
+                        <?php 
+                            $open = explode(":",$canteenRow["canteenOpenHour"]);
+                            $close = explode(":",$canteenRow["canteenCloseHour"]);
+                            echo $open[0].":".$open[1]." - ".$close[0].":".$close[1];
+                        ?>
+                    </li>
+                    <li class="">Telephone number: <?php echo "(+91) ".$canteenRow["canteenContactNo"];?></li>
+                </ul>
+                <a class="btn btn-sm btn-outline-secondary" href="adminCanteenPassword.php?canteenId=<?php echo $canteenId?>">
+            Change password
+        </a>
+        <a class="btn btn-sm btn-primary mt-2 mt-md-0" href="adminCanteenEdit.php?canteenId=<?php echo $canteenId?>">
+            Update Canteen Profile
+        </a>
+        <a class="btn btn-sm btn-danger mt-2 mt-md-0" href="adminCanteenDelete.php?canteenId=<?php echo $canteenId?>">
+            Delete this canteen
+        </a>
+            </div>
+        </div>
+
+        <!-- GRID MENU SELECTION -->
+        <div class="container">
+        <h3 class="border-top pt-3 my-2">
+            <a class="text-decoration-none link-success" href="adminCanteenDetail.php?canteenId=<?php echo $canteenId?>">Menus</a>
+            <span class="text-secondary">/</span> 
+            <a class="nav-item text-decoration-none link-secondary" href="adminCanteenOrder.php?canteenId=<?php echo $canteenId?>">Orders</a></span>
+            <span class="text-secondary">/</span> 
+            <a class="nav-item text-decoration-none link-secondary" href="adminCanteenRevenue.php?canteenId=<?php echo $canteenId?>">Revenue</a></span>
+        </h3>
+            <form class="form-floating mb-1 " method="GET" action="adminCanteenDetail.php">
+                <div class="row g-2">
+                    <div class="col">
+                        <input type="hidden" name="canteenId" value="<?php echo $canteenId;?>">
+                        <input type="text" class="form-control" id="foodname" name="foodName" placeholder="Food name"
+                            <?php if(isset($_GET["search"])){?>value="<?php echo $_GET["foodName"];?>" <?php } ?>>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" name="search" value="1" class="btn btn-success">Search</button>
+                        <button type="reset" class="btn btn-danger"
+                            onclick="javascript: window.location='adminCanteenDetail.php?canteenId=<?php echo $canteenId?>'">Clear</button>
+                        <a href="adminFoodAdd.php?canteenId=<?php echo $canteenId?>" class="btn btn-primary">Add new food</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <?php
+            $result -> free_result();
+            if(isset($_GET["search"])){
+                $query = "SELECT * FROM food WHERE canteenId = {$canteenId} AND foodName LIKE '%{$_GET['foodName']}%' ORDER BY foodPrice DESC;";
+            }else{
+                $query = "SELECT * FROM food WHERE canteenId = {$canteenId} ORDER BY foodPrice DESC;";
+            }
+            $result = $mysqli -> query($query);
+            $numrow = $result -> num_rows;
+            if($numrow > 0){
+        ?>
+        <div class="container align-items-stretch">
+            <!-- GRID EACH MENU -->
+            <div class="table-responsive">
+            <table class="table rounded-5 table-light table-striped table-hover align-middle caption-top mb-3">
+                <caption><?php echo $numrow;?> item(s) <?php if(isset($_GET["search"])){?><br /><a
+                        href="adminCanteenDetail.php?canteenId=<?php echo $canteenId?>" class="text-decoration-none text-danger">Clear Search
+                        Result</a><?php } ?></caption>
+                <thead class="bg-light">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Menu Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Avaliability</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php $i=1; while($row = $result -> fetch_array()){ ?>
+                    <tr>
+                        <th><?php echo $i++;?></th>
+                        <td><?php echo $row["foodName"];?></td>
+                        <td><?php printf("%.2f Rs",$row["foodPrice"]);?></td>
+                        <td class="text-wrap">
+                            <ul class="list-unstyled mb-3 mb-md-0">
+                                <li class="my-2">
+                                    <?php if($row["foodTodayAvailable"]==1){ ?>
+                                    <span class="badge rounded-pill bg-success">Avaliable</span>
+                                    <?php }else{ ?>
+                                    <span class="badge rounded-pill bg-danger">Unavaliable</span>
+                                    <?php }
+                                        if($row["foodPreOrderAvailable"]==1){?>
+                                    <span class="badge rounded-pill bg-success">Pre-order avaliable</span>
+                                    <?php }else{ ?>
+                                    <span class="badge rounded-pill bg-danger">Pre-order Unavaliable</span>
+                                    <?php }?>
+                                </li>
+                            </ul>
+                        </td>
+                        <td>
+                            <a href="adminFoodDetail.php?foodId=<?php echo $row["foodId"]?>"
+                                class="btn btn-sm btn-primary">View</a>
+                            <a href="adminFoodEdit.php?foodId=<?php echo $row["foodId"]?>"
+                                class="btn btn-sm btn-outline-success">Edit</a>
+                            <a href="adminFoodDelete.php?foodId=<?php echo $row["foodId"]?>"
+                                class="btn btn-sm btn-outline-danger">Delete</a>
+                        </td>
+                    </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
+        </div>
+        <?php }else{ ?>
+        <div class="row">
+            <div class="col m-2 p-2 bg-danger text-white rounded text-start">
+                <span class="ms-2 mt-2">No menu found in this canteen</span>
+                <a href="adminCanteenDetail.php?canteenId=<?php echo $canteenId;?>" class="text-white">Clear Search Result</a>
+            </div>
+        </div>
+        <!-- END GRID canteen SELECTION -->
+        <?php } ?>
+    </div>
+</body>
+
+</html>
