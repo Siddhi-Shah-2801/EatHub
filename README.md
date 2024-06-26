@@ -1,12 +1,1 @@
-![Welcome Page](https://github.com/Siddhi-Shah-2801/EatHub/assets/81108059/ab97e738-448d-4bd0-bc34-529b18700aa3)
-![Diet Recommendation Input](https://github.com/Siddhi-Shah-2801/EatHub/assets/81108059/7daff06c-3c2d-44b8-831b-dd35f064b39e)
-![BMI and Calories Calculator](https://github.com/Siddhi-Shah-2801/EatHub/assets/81108059/92ba3a2d-e1b3-4423-9c30-3566fce92d2d)
-![Recommended Recipes](https://github.com/Siddhi-Shah-2801/EatHub/assets/81108059/7e501bee-72cf-4842-9eae-40f069985aa6)
-![Recipe Content](https://github.com/Siddhi-Shah-2801/EatHub/assets/81108059/69d18f96-2fe7-4031-82b7-b5e2196f20ca)
-![Nutritional Values](https://github.com/Siddhi-Shah-2801/EatHub/assets/81108059/3fc12eb9-0718-4aa1-945a-c68d8a052b99)
-![Chart for Total Calories vs  Mild Weight Loss Calories](https://github.com/Siddhi-Shah-2801/EatHub/assets/81108059/999f9cac-b2b3-4502-9ee3-68664999274e)
-![Nutritional Values in Recipes](https://github.com/Siddhi-Shah-2801/EatHub/assets/81108059/2576db2e-8974-4bd7-bf68-117dc6e15c9b)
-![Custom Food Recommendation Input](https://github.com/Siddhi-Shah-2801/EatHub/assets/81108059/4c7322b4-1b13-4228-a01c-3bd5605d8d14)
-![Related Recipes and Nutritional Charts](https://github.com/Siddhi-Shah-2801/EatHub/assets/81108059/d85ce67e-9d57-4fd2-8110-232343cf9399)
-![Select Legend for Nutritional Chart](https://github.com/Siddhi-Shah-2801/EatHub/assets/81108059/631c38b6-26af-4fc8-be2c-e98f1bfe6093)
-![Preferred Ingredients Recipes Not Found](https://github.com/Siddhi-Shah-2801/EatHub/assets/81108059/00b188da-ba72-4211-97e0-41a2b8000720)
+
